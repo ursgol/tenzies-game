@@ -29,6 +29,7 @@ function allNewDice(){
 export default function App() {
   const [dice, setDice]= React.useState(allNewDice())
   const [tenzies, setTenzies] = React.useState(false)
+  const [count, setCount] = React.useState(0)
 
 
   React.useEffect(() => {
@@ -39,6 +40,8 @@ export default function App() {
 
     if (allHeld && allSameValue){
       setTenzies(true)
+      setCount(0)
+      
       //console.log("You won!")
      // console.log(tenzies) 
       
@@ -49,16 +52,24 @@ export default function App() {
   const diceElements = dice.map(die => <Die key = {die.id} value={die.value} isHeld={die.isHeld} id={die.id} holdDice={() => holdDice(die.id)} />)
 
   function rollDice(isHeld){
-
-    if(!tenzies){
+    
+    if(!tenzies && count < 10){
+    setCount(count +1)
+    console.log(count)
     setDice(oldDice => oldDice.map(die =>{
       return die.isHeld ? 
       die
       : generateNewDie()
     }))
+  }else if(count === 10){
+    //console.log("You reached 10 times")
+    setCount(0)
+    setDice(allNewDice())
+   
   }else{
     setTenzies(false)
     setDice(allNewDice())
+   
   }
 
 
@@ -78,10 +89,10 @@ export default function App() {
 
   return (<main>
     <div className="setup">
+    {((tenzies && count <10) && <Confetti />)}
       <div className="title">Tenzies</div>
       <div className="description">
-      {tenzies && <Confetti />}
-        <p>Roll until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
+        <p>Roll <strong>10</strong> times until all dice are the same. Click each die to freeze it at its current value between rolls.</p>
       </div>
       <div className="container--1">
         {diceElements.slice(0,5)}
@@ -89,7 +100,9 @@ export default function App() {
       <div  className="container--2">
       {diceElements.slice(-5)}
       </div>
-      <button onClick={rollDice}>{tenzies === true ? "New Game": "Roll"}</button>
+      <button onClick={rollDice}>{count ===10 || tenzies === true? "New Game": "Roll"}</button>
+      {count < 10?<p className="para-green">You rolled: {count} times</p>:<p className="para-red">You rolled 10 times!</p> }
+      {count ===10? <p>Try new game!</p>: null}
     </div>
   </main>
   )

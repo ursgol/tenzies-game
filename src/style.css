@@ -120,5 +120,18 @@ button{
   margin-bottom: 3.5px;
 }
 
+p{
+  text-align:center;
+  font-weight: 700;
+}
+
+.para-red{
+  color:rgb(191, 37, 37);
+}
+
+.para-green{
+  color:green;
+}
+
  
 
