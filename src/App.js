@@ -52,6 +52,8 @@ export default function App() {
   const diceElements = dice.map(die => <Die key = {die.id} value={die.value} isHeld={die.isHeld} id={die.id} holdDice={() => holdDice(die.id)} />)
 
   function rollDice(isHeld){
+     // console.log(start)
+    
     
     if(!tenzies && count < 10){
     setCount(count +1)
@@ -60,7 +62,7 @@ export default function App() {
       return die.isHeld ? 
       die
       : generateNewDie()
-    }))
+    }))   
   }else if(count === 10){
     //console.log("You reached 10 times")
     setCount(0)
@@ -71,6 +73,7 @@ export default function App() {
     setDice(allNewDice())
    
   }
+
 
 
   }
